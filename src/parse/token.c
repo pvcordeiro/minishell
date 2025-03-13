@@ -14,42 +14,42 @@
 
 t_token	*new_token(char *type, t_cmd *cmd)
 {
-    t_token	*t;
+	t_token	*t;
 
-    if (!type)
-        return (NULL);
-    t = ft_calloc(sizeof(t_token));
-    if (!t)
-        return (NULL);
-    t->cmd = cmd;
-    if (str().equals("|", type))
-    {
-        t->type = PIPE;
-        t->balancing = 1;
-    }
-    else if (str().equals("||", type))
-    {
-        t->type = OR;
-        t->balancing = 1;
-    }
-    else if (str().equals("&&", type))
-    {
-        t->type = AND;
-        t->balancing = 1;
-    }
-    else
-        t->type = CMD;
-    t->pid = 0;
-    return (t);
+	if (!type)
+		return (NULL);
+	t = ft_calloc(sizeof(t_token));
+	if (!t)
+		return (NULL);
+	t->cmd = cmd;
+	if (str().equals("|", type))
+	{
+		t->type = PIPE;
+		t->balancing = 1;
+	}
+	else if (str().equals("||", type))
+	{
+		t->type = OR;
+		t->balancing = 1;
+	}
+	else if (str().equals("&&", type))
+	{
+		t->type = AND;
+		t->balancing = 1;
+	}
+	else
+		t->type = CMD;
+	t->pid = 0;
+	return (t);
 }
 
 bool	free_token(t_token *token)
 {
-    if (!token)
-        return (false);
-    free_cmd(token->cmd);
-    free_token(token->left);
-    free_token(token->right);
-    free(token);
-    return (true);
+	if (!token)
+		return (false);
+	free_cmd(token->cmd);
+	free_token(token->left);
+	free_token(token->right);
+	free(token);
+	return (true);
 }

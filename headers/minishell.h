@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 20:38:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 13:49:50 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:52:56 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,14 @@ struct s_token
 	struct s_token	*right;
 	pid_t			pid;
 };
+
+typedef struct s_lexer
+{
+	char		*input;
+	size_t		pos;
+	size_t		len;
+	char		curr_char;
+}				t_lexer;
 
 //parse
 char		**tokenize(char *input);
