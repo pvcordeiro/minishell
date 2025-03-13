@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 20:38:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 14:36:11 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:44:54 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_redirect
 struct					s_cmd
 {
 	char				**args;
-	pid_t				(*execute)(t_cmd * cmd, int in, int out);
+	pid_t				(*execute)(t_cmd *cmd, int in, int out);
 	int					in;
 	int					out;
 	t_redirect			*redirect;
@@ -101,8 +101,15 @@ char					*read_parenthesis(t_lexer *lexer);
 char					*handle_special_char(t_lexer *lexer);
 void					add_token_to_array(t_array *tokens, char *token);
 // parse
-char					**tokenize(char *input);
+int						is_redirection(char *token);
+t_redirect				*create_redirection(char **tokens, size_t *pos);
+void					add_redirection(t_cmd *cmd, t_redirect *new_redirect);
+t_token					*parse_simple_command(char **tokens, size_t *pos);
+t_token					*parse_pipe(char **tokens, size_t *pos);
+t_token					*parse_and_or(char **tokens, size_t *pos);
 t_token					*parse(char *line);
+// token
+char					**tokenize(char *input);
 bool					free_token(t_token *token);
 void					free_redirect(t_redirect *r);
 t_token					*new_token(char *type, t_cmd *cmd);
