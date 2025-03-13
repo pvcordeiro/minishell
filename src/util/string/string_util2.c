@@ -6,14 +6,13 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 15:38:15 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 12:28:17 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:49:37 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_string.h>
 #include <stdio.h>
 #include <ft_util.h>
-
 
 int	__equals_n(const char *str1, const char *str2, int n)
 {

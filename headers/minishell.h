@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 20:38:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 12:58:11 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:49:50 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char		**tokenize(char *input);
 t_token		*parse(char *line);
 bool		free_token(t_token *token);
 void		free_redirect(t_redirect *r);
-t_token	*new_token(char *type, t_cmd *cmd);
+t_token		*new_token(char *type, t_cmd *cmd);
 // env
 void		init_env(char **env);
 // terminal
