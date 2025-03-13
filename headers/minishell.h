@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 20:38:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 13:52:56 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:31:55 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,17 @@ typedef struct s_lexer
 	char		curr_char;
 }				t_lexer;
 
+//lexer
+t_lexer	*init_lexer(char *input);
+void	advance_lexer(t_lexer *lexer);
+void	skip_whitespace(t_lexer *lexer);
+char	*read_operator(t_lexer *lexer);
+char	*read_redirection(t_lexer *lexer);
+char	*read_string(t_lexer *lexer, char quote);
+char	*read_word(t_lexer *lexer);
+char	*read_parenthesis(t_lexer *lexer);
+char	*handle_special_char(t_lexer *lexer);
+void	add_token_to_array(t_array *tokens, char *token);
 //parse
 char		**tokenize(char *input);
 t_token		*parse(char *line);
