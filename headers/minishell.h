@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 20:38:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 18:04:18 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/13 19:37:46 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,6 @@ t_cmd					*new_cmd(char **args);
 // utils
 void					print_list(char **args);
 int						ft_close(int fd);
+void					*ft_memset(void *s, int c, size_t n);
 
 #endif

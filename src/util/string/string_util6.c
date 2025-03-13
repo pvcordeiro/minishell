@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 23:40:35 by afpachec          #+#    #+#             */
-/*   Updated: 2025/03/13 19:02:40 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/13 19:37:34 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,21 @@ int	__isnumeric(char c)
 int	__isalnum(char c)
 {
 	return (__isalpha(c) || __isnumeric(c));
+}
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	unsigned char	*ptr;
+	size_t			i;
+
+	ptr = (unsigned char *)s;
+	i = 0;
+	while (i < n)
+	{
+		ptr[i] = (unsigned char)c;
+		i++;
+	}
+	return (s);
 }
 
 int	__starts_with(const char *str, const char *prefix)
