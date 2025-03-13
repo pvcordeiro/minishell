@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 20:38:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 14:44:54 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:55:34 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_redirect
 struct					s_cmd
 {
 	char				**args;
-	pid_t				(*execute)(t_cmd *cmd, int in, int out);
+	pid_t				(*execute)(t_cmd * cmd, int in, int out);
 	int					in;
 	int					out;
 	t_redirect			*redirect;

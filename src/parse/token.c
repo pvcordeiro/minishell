@@ -6,22 +6,14 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 11:32:12 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 12:26:55 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:55:19 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-t_token	*new_token(char *type, t_cmd *cmd)
+static void	set_token_type(t_token *t, char *type)
 {
-	t_token	*t;
-
-	if (!type)
-		return (NULL);
-	t = ft_calloc(sizeof(t_token));
-	if (!t)
-		return (NULL);
-	t->cmd = cmd;
 	if (str().equals("|", type))
 	{
 		t->type = PIPE;
@@ -39,6 +31,19 @@ t_token	*new_token(char *type, t_cmd *cmd)
 	}
 	else
 		t->type = CMD;
+}
+
+t_token	*new_token(char *type, t_cmd *cmd)
+{
+	t_token	*t;
+
+	if (!type)
+		return (NULL);
+	t = ft_calloc(sizeof(t_token));
+	if (!t)
+		return (NULL);
+	t->cmd = cmd;
+	set_token_type(t, type);
 	t->pid = 0;
 	return (t);
 }
