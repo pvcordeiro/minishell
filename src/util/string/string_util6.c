@@ -6,15 +6,15 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 23:40:35 by afpachec          #+#    #+#             */
-/*   Updated: 2025/03/13 19:37:34 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/17 13:32:10 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_string.h>
-#include <ft_util.h>
-#include <minishell.h>
-#include <stdio.h>
 #include <string_util.h>
+#include <stdio.h>
+#include <ft_util.h>
+#include <stdio.h>
 
 int	__isalpha(char c)
 {
@@ -53,8 +53,8 @@ int	__starts_with(const char *str, const char *prefix)
 
 	if (!str || !prefix)
 		return (0);
-	str_len = ft_size(str);
-	prefix_len = ft_size(prefix);
+	str_len = ft_strlen(str);
+	prefix_len = ft_strlen(prefix);
 	if (prefix_len > str_len)
 		return (0);
 	return (__equals_n(str, prefix, prefix_len));
