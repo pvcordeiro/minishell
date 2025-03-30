@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 17:56:03 by afpachec          #+#    #+#             */
-/*   Updated: 2025/03/30 12:29:59 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/30 12:48:52 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ void	handle_signal(int sig)
 	{
 		kill_token(terminal()->token);
 		rl_replace_line("", 0);
-		printf("\n");
+		ft_printf("\n");
 		rl_on_new_line();
 	}
 	rl_redisplay();
