@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 17:56:03 by afpachec          #+#    #+#             */
-/*   Updated: 2025/03/30 12:16:30 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/30 12:29:59 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ void	loop(void)
 	while (1)
 	{
 		mask_signals();
-		line = readline("minishell$ ");
+		line = readline("🐚minishell🐚 ");
 		if (!line)
 			ft_exit();
 		if (ft_strlen(line))
