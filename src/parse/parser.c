@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:25:48 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 14:39:48 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/30 11:34:24 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	is_redirection(char *token)
 {
-	return (str().equals(token, "<") || str().equals(token, ">")
-		|| str().equals(token, "<<") || str().equals(token, ">>"));
+	return (ft_strcmp(token, "<") == 0 || ft_strcmp(token, ">") == 0
+		|| ft_strcmp(token, "<<") == 0 || ft_strcmp(token, ">>") == 0);
 }
 
 t_redirect	*create_redirection(char **tokens, size_t *pos)
@@ -25,16 +25,16 @@ t_redirect	*create_redirection(char **tokens, size_t *pos)
 
 	if (!tokens[*pos] || !tokens[*pos + 1])
 		return (NULL);
-	redirect = ft_calloc(sizeof(t_redirect));
+	redirect = ft_calloc(1, sizeof(t_redirect));
 	if (!redirect)
 		return (NULL);
-	args = ft_calloc(3 * sizeof(char *));
+	args = ft_calloc(3, sizeof(char *));
 	if (!args)
 		return (free(redirect), NULL);
-	args[0] = str().copy(tokens[*pos]);
-	args[1] = str().copy(tokens[*pos + 1]);
+	args[0] = ft_strdup(tokens[*pos]);
+	args[1] = ft_strdup(tokens[*pos + 1]);
 	redirect->args = args;
-	if (str().equals(args[0], "<") || str().equals(args[0], "<<"))
+	if (ft_strcmp(args[0], "<") || ft_strcmp(args[0], "<<"))
 		redirect->type = IN;
 	else
 		redirect->type = OUT;
@@ -73,7 +73,6 @@ t_token	*parse(char *line)
 		return (NULL);
 	pos = 0;
 	result = parse_and_or(tokens, &pos);
-	free_list(tokens);
-	terminal()->token = result;
+	ft_strvfree(tokens);
 	return (result);
 }

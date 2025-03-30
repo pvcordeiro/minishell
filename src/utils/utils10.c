@@ -1,34 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   utils10.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/19 15:58:34 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 19:45:59 by paude-so         ###   ########.fr       */
+/*   Created: 2025/03/29 15:18:01 by paude-so          #+#    #+#             */
+/*   Updated: 2025/03/29 17:01:17 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <ft_utils.h>
 
-int	ft_close(int fd)
+void	ft_close(int fd)
 {
 	if (fd > 2)
-		return (close(fd));
-	return (-1);
+		close(fd);
 }
 
-void	print_list(char **args)
+void	ft_close2(int fd1, int fd2)
 {
-	while (args && *args)
+	ft_close(fd1);
+	ft_close(fd2);
+}
+
+void	ft_fprint_strv(int fd, char **strv)
+{
+	int	i;
+
+	i = 0;
+	ft_fputstr(fd, "[");
+	while (strv && strv[i])
 	{
-		printf(":%s\n", *args);
-		args++;
+		ft_fputstr(fd, strv[i]);
+		if (strv[i + 1])
+			ft_fputstr(fd, ", ");
+		i++;
 	}
-}
-
-void	set_errno(int err)
-{
-	errno = err;
+	ft_fputstr(fd, "]\n");
 }

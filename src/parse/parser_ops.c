@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 14:40:27 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 14:40:41 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:08:19 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ t_token	*parse_pipe(char **tokens, size_t *pos)
 	left = parse_simple_command(tokens, pos);
 	if (!left)
 		return (NULL);
-	while (tokens[*pos] && str().equals(tokens[*pos], "|"))
+	while (tokens[*pos] && ft_strcmp(tokens[*pos], "|") == 0)
 	{
 		(*pos)++;
-		right = parse_simple_command(tokens, pos);
+		right = parse_pipe(tokens, pos);
 		if (!right)
 			return (free_token(left), NULL);
 		result = new_token("|", NULL);
@@ -47,8 +47,8 @@ t_token	*parse_and_or(char **tokens, size_t *pos)
 	left = parse_pipe(tokens, pos);
 	if (!left)
 		return (NULL);
-	while (tokens[*pos] && (str().equals(tokens[*pos], "&&")
-			|| str().equals(tokens[*pos], "||")))
+	while (tokens[*pos] && (ft_strcmp(tokens[*pos], "&&") == 0
+			|| ft_strcmp(tokens[*pos], "||") == 0))
 	{
 		op_type = tokens[*pos];
 		(*pos)++;

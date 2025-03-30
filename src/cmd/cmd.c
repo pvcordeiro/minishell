@@ -6,92 +6,28 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:36:47 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/18 15:51:14 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/29 18:09:23 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-pid_t		execute(t_cmd *cmd, int in, int out);
-pid_t		execute_cd(t_cmd *cmd, int in, int out);
-pid_t		execute_pwd(t_cmd *cmd, int in, int out);
-pid_t		execute_exit(t_cmd *cmd, int in, int out);
-pid_t		execute_echo(t_cmd *cmd, int in, int out);
-pid_t		execute_export(t_cmd *cmd, int in, int out);
-pid_t		execute_env(t_cmd *cmd, int in, int out);
-pid_t		execute_unset(t_cmd *cmd, int in, int out);
-
-static t_redirect	*new_redirect(char	**args)
-{
-	t_redirect	*r;
-
-	if (!args)
-		return (NULL);
-	r = ft_calloc(sizeof(t_redirect));
-	if (!r)
-		return (free_list(args), NULL);
-	r->args = args;
-	if (str().equals(args[0], ">") || str().equals(args[0], ">>"))
-		r->type = OUT;
-	else if (str().equals(args[0], "<") || str().equals(args[0], "<<"))
-        r->type = IN;
-	return (r);
-}
-
-static int	organizar(char	**args, size_t i)
-{
-	size_t	start;
-
-	start = i + (args[i + 1] != NULL);
-	free(args[i]);
-	free(args[i + 1]);
-	while (args[++start])
-		args[i++] = args[start];
-	args[i] = NULL;
-	return (0);
-}
-
-static void	init_redirect(t_cmd	*cmd)
-{
-	size_t		i;
-	t_redirect	*end;
-	t_redirect	*new;
-
-	i = 0;
-	end = NULL;
-	while (cmd->args[i])
-	{
-		if (str().equals(cmd->args[i], ">") || str().equals(cmd->args[i], "<") \
-		|| str().equals(cmd->args[i], ">>") || str().equals(cmd->args[i], "<<"))
-		{
-			new = new_redirect(str().copy_array_n(cmd->args + i, 2));
-			if (cmd->redirect == NULL)
-				cmd->redirect = new;
-			else
-				end->next = new;
-			end = new;
-			i = organizar(cmd->args, i);
-		}
-		else
-			i++;
-	}
-}
+#include <execution.h>
 
 static	void	init_fun(t_cmd	*cmd)
 {
-	if (str().equals(*cmd->args, "echo"))
+	if (ft_strcmp(*cmd->args, "echo") == 0)
 		cmd->execute = execute_echo;
-	else if (str().equals(*cmd->args, "export"))
+	else if (ft_strcmp(*cmd->args, "export") == 0)
 		cmd->execute = execute_export;
-	else if (str().equals(*cmd->args, "env"))
+	else if (ft_strcmp(*cmd->args, "env") == 0)
 		cmd->execute = execute_env;
-	else if (str().equals(*cmd->args, "unset"))
+	else if (ft_strcmp(*cmd->args, "unset") == 0)
 		cmd->execute = execute_unset;
-	else if (str().equals(*cmd->args, "cd"))
+	else if (ft_strcmp(*cmd->args, "cd") == 0)
 		cmd->execute = execute_cd;
-	else if (str().equals(*cmd->args, "pwd"))
+	else if (ft_strcmp(*cmd->args, "pwd") == 0)
 		cmd->execute = execute_pwd;
-	else if (str().equals(*cmd->args, "exit"))
+	else if (ft_strcmp(*cmd->args, "exit") == 0)
 		cmd->execute = execute_exit;
 	else
 		cmd->execute = execute;
@@ -100,28 +36,13 @@ static	void	init_fun(t_cmd	*cmd)
 t_cmd	*new_cmd(char **args)
 {
 	t_cmd	*cmd;
-	int		i;
-	char	*expanded;
 
-	cmd = ft_calloc(sizeof(t_cmd));
+	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
-	i = 0;
-	while (args[i])
-	{
-		if (i > 0)
-		{
-			expanded = process_arg_expansion(args[i]);
-			free(args[i]);
-			args[i] = expanded;
-		}
-		i++;
-	}
+	process_env_assignments(args);
 	cmd->args = args;
-	init_redirect(cmd);
 	init_fun(cmd);
-	if (cmd->args && *cmd->args)
-		cmd->args[0] = get_command_path(cmd->args [0]);
 	cmd->in = -2;
 	cmd->out = -2;
 	return (cmd);

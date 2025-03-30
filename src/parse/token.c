@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 11:32:12 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 14:55:19 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:13:47 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,12 @@
 
 static void	set_token_type(t_token *t, char *type)
 {
-	if (str().equals("|", type))
-	{
+	if (ft_strcmp("|", type) == 0)
 		t->type = PIPE;
-		t->balancing = 1;
-	}
-	else if (str().equals("||", type))
-	{
+	else if (ft_strcmp("||", type) == 0)
 		t->type = OR;
-		t->balancing = 1;
-	}
-	else if (str().equals("&&", type))
-	{
+	else if (ft_strcmp("&&", type) == 0)
 		t->type = AND;
-		t->balancing = 1;
-	}
 	else
 		t->type = CMD;
 }
@@ -39,7 +30,7 @@ t_token	*new_token(char *type, t_cmd *cmd)
 
 	if (!type)
 		return (NULL);
-	t = ft_calloc(sizeof(t_token));
+	t = ft_calloc(1, sizeof(t_token));
 	if (!t)
 		return (NULL);
 	t->cmd = cmd;

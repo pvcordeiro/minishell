@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:25:41 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 18:10:42 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/03/30 12:08:00 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,15 @@ char	*handle_special_char(t_lexer *lexer)
 		token = read_operator(lexer);
 	else if (lexer->curr_char == '<' || lexer->curr_char == '>')
 		token = read_redirection(lexer);
-	else if (lexer->curr_char == '\'')
-		token = read_single_quote(lexer);
-	else if (lexer->curr_char == '\"')
-		token = read_double_quote(lexer);
-	else if (lexer->curr_char == '(' || lexer->curr_char == ')')
-		token = read_parenthesis(lexer);
 	else
 		token = read_word(lexer);
 	return (token);
 }
 
-void	add_token_to_array(t_array *tokens, char *token)
+void	add_token_to_array(t_list **tokens, char *token)
 {
 	if (token && *token)
-		array(tokens)->add(token);
+		ft_list_add(tokens, ft_strdup(token), free);
 	else
 		free(token);
 }
@@ -42,13 +36,13 @@ void	add_token_to_array(t_array *tokens, char *token)
 static char	**lexer_tokenize(char *input)
 {
 	t_lexer	*lexer;
-	t_array	*tokens;
+	t_list	*tokens;
 	char	*token;
 	char	**result;
 
 	lexer = init_lexer(input);
-	tokens = new_array();
-	if (!lexer || !tokens)
+	tokens = NULL;
+	if (!lexer)
 		return (NULL);
 	while (lexer->curr_char)
 	{
@@ -56,11 +50,11 @@ static char	**lexer_tokenize(char *input)
 		if (!lexer->curr_char)
 			break ;
 		token = handle_special_char(lexer);
-		add_token_to_array(tokens, token);
+		add_token_to_array(&tokens, token);
 	}
 	free(lexer);
-	result = array(tokens)->to_str();
-	array(tokens)->destroy();
+	result = ft_list_to_strv(tokens);
+	ft_list_destroy(&tokens);
 	return (result);
 }
 
@@ -74,13 +68,11 @@ char	**tokenize(char *input)
 char	*read_word(t_lexer *lexer)
 {
 	size_t	start;
+	char	quote;
 
+	quote = 0;
 	start = lexer->pos;
-	while (lexer->curr_char && !str().is_space(lexer->curr_char)
-		&& lexer->curr_char != '|' && lexer->curr_char != '&'
-		&& lexer->curr_char != '<' && lexer->curr_char != '>'
-		&& lexer->curr_char != '\'' && lexer->curr_char != '\"'
-		&& lexer->curr_char != '(' && lexer->curr_char != ')')
+	while (lexer->curr_char && can_move(&quote, lexer->curr_char))
 		advance_lexer(lexer);
-	return (str().copy_n(lexer->input + start, lexer->pos - start));
+	return (ft_strndup(lexer->input + start, lexer->pos - start));
 }

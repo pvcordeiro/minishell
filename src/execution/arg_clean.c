@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   this.c                                             :+:      :+:    :+:   */
+/*   arg_clean.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/13 12:23:44 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/13 12:25:58 by paude-so         ###   ########.fr       */
+/*   Created: 2025/03/22 13:30:29 by paude-so          #+#    #+#             */
+/*   Updated: 2025/03/22 15:07:47 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <execution.h>
 
-t_this	*this(void)
+void	arg_clean(t_cmd *cmd)
 {
-	static t_this	t;
+	int	i;
+	int	j;
 
-	return (&t);
-}
-
-t_terminal	*terminal(void)
-{
-	static t_terminal	t;
-
-	return (&t);
-}
-
-t_array	*array(t_array *a)
-{
-	this()->array = a;
-	return (a);
+	i = 0;
+	j = 0;
+	if (!cmd->args)
+		return ;
+	while (cmd->args[i])
+	{
+		if (cmd->args[i][0])
+			cmd->args[j++] = cmd->args[i];
+		else
+			free(cmd->args[i]);
+		i++;
+	}
+	cmd->args[j] = NULL;
 }
