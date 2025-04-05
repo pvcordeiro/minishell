@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: afpachec <afpachec@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:25:48 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/30 11:34:24 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/04 00:07:51 by afpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,37 @@ t_redirect	*create_redirection(char **tokens, size_t *pos)
 	return (redirect);
 }
 
-void	add_redirection(t_cmd *cmd, t_redirect *new_redirect)
+static bool	check_syntax_errors(char *line)
 {
-	t_redirect	*redirect;
+	int		i;
+	char	quote;
 
-	if (!cmd || !new_redirect)
-		return ;
-	if (!cmd->redirect)
+	i = 0;
+	quote = 0;
+	while (line[i])
 	{
-		cmd->redirect = new_redirect;
-		return ;
+		if (!quote && (line[i] == '\'' || line[i] == '"'))
+			quote = line[i];
+		else if (quote && line[i] == quote)
+			quote = 0;
+		else if (!quote && line[i] == ';')
+			return (true);
+		i++;
 	}
-	redirect = cmd->redirect;
-	while (redirect->next)
-		redirect = redirect->next;
-	redirect->next = new_redirect;
+	if (quote != 0)
+		return (true);
+	return (false);
+}
+
+static bool	is_only_spaces(char *line)
+{
+	while (*line)
+	{
+		if (!ft_isspace(*line))
+			return (false);
+		++line;
+	}
+	return (true);
 }
 
 t_token	*parse(char *line)
@@ -65,9 +81,15 @@ t_token	*parse(char *line)
 	size_t	pos;
 	t_token	*result;
 
-	if (!line || !*line)
-		return (NULL);
 	free_token(terminal()->token);
+	if (!line || is_only_spaces(line))
+		return (NULL);
+	if (check_syntax_errors(line))
+	{
+		ft_fputstr(2, "minishell: syntax error\n");
+		terminal()->status = 258;
+		return (NULL);
+	}
 	tokens = tokenize(line);
 	if (!tokens)
 		return (NULL);

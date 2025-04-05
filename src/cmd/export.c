@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: afpachec <afpachec@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:36:26 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/30 11:58:55 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/04 00:19:40 by afpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,51 @@
 
 static bool	check_key(char *value)
 {
-	size_t	alpha_count;
-
-	if (!value)
+	if (!value || !*value)
 		return (false);
-	if (!(ft_isalpha(*value) || *value == '_'))
+	if (ft_isdigit(*value))
 		return (false);
-	alpha_count = ft_isalpha(*value);
-	value++;
-	while (*value && (ft_isalnum(*value) || *value == '_'))
+	while (*value)
 	{
-		alpha_count += ft_isalpha(*value);
+		if (!ft_isalnum(*value) && *value != '_')
+			return (false);
 		value++;
 	}
-	return (!*value && alpha_count);
+	return (true);
 }
 
-static void	export_str(t_cmd *cmd, char *value)
+static void	export_error(char **equals, char **var_name)
 {
-	char	**args;
-	size_t	len;
+	ft_fputstr(2, "export: ");
+	ft_fputstr(2, "not a valid identifier\n");
+	terminal()->status = 1;
+	if (*equals)
+		free(*var_name);
+}
 
-	args = ft_split(value, "=");
-	if (!check_key(args[0]))
+static void	export_str(t_cmd *cmd, char *arg)
+{
+	char	*var_name;
+	char	*var_value;
+	char	*equals;
+
+	equals = ft_strstr(arg, "=");
+	if (!arg)
+		return ;
+	var_name = arg;
+	if (equals)
+		var_name = ft_strndup(arg, equals - arg);
+	if (!check_key(var_name))
 	{
-		ft_fputstr(2, "export: ");
-		ft_fputstr(2, "not a valid identifier\n");
-		ft_strvfree(args);
-		terminal()->status = 1;
+		export_error(&equals, &var_name);
 		return ;
 	}
-	if (ft_strstr(value, "=") && !args[1])
-		args[1] = ft_strdup("");
-	len = 0;
-	while (args[1] && args[1][len] && ft_isalnum(args[1][len]))
-		len++;
-	if (args[1])
-		args[1][len] = 0;
-	if (cmd->in != 0 && cmd->out != 1) // TODO without this, cmd works
-		ft_hashmap_set(terminal()->env, ft_strdup(args[0]), ft_strdup(args[1]),
-			free);
-	ft_strvfree(args);
+	if (!equals)
+		return ;
+	var_value = ft_strdup(equals + 1);
+	if (cmd->in == 0 && cmd->out == 1)
+		ft_hashmap_set(terminal()->env, var_name, var_value, free);
+	free(var_name);
 }
 
 static void	print_export(int out)

@@ -1,11 +1,55 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g # -fsanitize=address
-INCLUDES = -I headers -I /opt/homebrew/opt/readline/include -I .brew/opt/readline/include
-SRCS =   $(shell find . -type f -name "*.c")
+CFLAGS = -Wall -Wextra -Werror
+INCLUDES = -I headers -I /opt/homebrew/opt/readline/include
+SRCS = src/cmd/cd.c \
+	   src/cmd/cmd.c \
+	   src/cmd/echo.c \
+	   src/cmd/env.c \
+	   src/cmd/exit.c \
+	   src/cmd/pwd.c \
+	   src/cmd/unset.c \
+	   src/cmd/export.c \
+	   src/execution/process/and.c \
+	   src/execution/process/or.c \
+	   src/execution/process/cmd.c \
+	   src/execution/process/pipe.c \
+	   src/execution/process/process.c \
+	   src/execution/arg_clean.c \
+	   src/execution/hide_signals.c \
+	   src/execution/arg_expansion.c \
+	   src/execution/arg_expansion_helper.c \
+	   src/execution/execution.c \
+	   src/execution/process_redirections.c \
+	   src/execution/prompt.c \
+	   src/execution/redirection.c \
+	   src/execution/utils.c \
+	   src/execution/utils2.c \
+	   src/parse/env_var_creat.c \
+	   src/parse/lexer.c \
+	   src/parse/lexer_read.c \
+	   src/parse/lexer_utils.c \
+	   src/parse/parser.c \
+	   src/parse/parser_cmd.c \
+	   src/parse/parser_ops.c \
+	   src/parse/token.c \
+	   src/terminal/terminal.c \
+	   src/env/env_create.c \
+	   src/main.c \
+	   src/utils/utils1.c \
+	   src/utils/utils10.c \
+	   src/utils/utils11.c \
+	   src/utils/utils2.c \
+	   src/utils/utils3.c \
+	   src/utils/utils4.c \
+	   src/utils/utils5.c \
+	   src/utils/utils6.c \
+	   src/utils/utils7.c \
+	   src/utils/utils8.c \
+	   src/utils/utils9.c
 OBJ_DIR = obj/
 OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
-READLINE_FLAGS = -L /opt/homebrew/opt/readline/lib -lreadline -lncurses -L .brew/opt/readline/lib
+READLINE_FLAGS = -L /opt/homebrew/opt/readline/lib -lreadline -lncurses
 
 all: $(NAME)
 
@@ -30,35 +74,13 @@ r: re
 
 v: re readline.supp
 	@valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --suppressions=readline.supp ./minishell
-vv: $(NAME) readline.supp
-	@valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --suppressions=readline.supp ./minishell
 
 readline.supp:
-	@wget https://raw.githubusercontent.com/benjaminbrassart/minishell/master/readline.supp 2> /dev/null 1> /dev/null
-
-test_builtins: re
-	@git clone https://github.com/LucasKuhn/minishell_tester
-	@cd minishell_tester && ((./tester builtins)|| true) && cd ..
-	@rm -rf minishell_tester
+	@wget https://raw.githubusercontent.com/afonsopc/minishell/refs/heads/readline.supp/readline.supp -O readline.supp
 
 test: re
 	@git clone https://github.com/LucasKuhn/minishell_tester
 	@cd minishell_tester && (./tester || true) && cd ..
 	@rm -rf minishell_tester
 
-test_wildcards: re
-	@git clone https://github.com/LucasKuhn/minishell_tester
-	@cd minishell_tester && ((./tester wildcards) || true) && cd ..
-	@rm -rf minishell_tester
-
-test_syntax: re
-	@git clone https://github.com/LucasKuhn/minishell_tester
-	@cd minishell_tester && ((./tester syntax) || true) && cd ..
-	@rm -rf minishell_tester
-
-test_os_specific: re
-	@git clone https://github.com/LucasKuhn/minishell_tester
-	@cd minishell_tester && ((./tester os_specific) || true) && cd ..
-	@rm -rf minishell_tester
-
-.PHONY: all re clean fclean r v vv readline.supp
+.PHONY: all re clean fclean r v readline.supp

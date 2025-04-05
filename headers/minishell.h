@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 20:38:14 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/30 12:17:27 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:04:52 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <dirent.h>
+# include <stdio.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <ft_utils.h>
@@ -21,13 +22,11 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-# include <bits/sigaction.h>
 
 typedef enum e_cmd_type
 {
@@ -72,6 +71,7 @@ typedef struct s_token
 
 typedef struct s_terminal
 {
+	char				*pagman;
 	t_hashmap			*env;
 	void				*new_env;
 	t_token				*token;
@@ -95,9 +95,6 @@ char					*read_operator(t_lexer *lexer);
 char					*read_redirection(t_lexer *lexer);
 char					*read_single_quote(t_lexer *lexer);
 char					*read_double_quote(t_lexer *lexer);
-char					*read_word(t_lexer *lexer);
-char					*handle_special_char(t_lexer *lexer);
-void					add_token_to_array(t_list **tokens, char *token);
 bool					can_move(char *quote, char curr);
 
 // parse
@@ -118,10 +115,13 @@ t_token					*new_token(char *type, t_cmd *cmd);
 // env
 void					init_env(char **env);
 void					process_env_assignments(char **args);
+char					*process_arg_expansions(char *arg, int *exit_status);
+char					*expand_variables_in_string(char *str, int *ext_sts);
 
 // terminal
 t_terminal				*terminal(void);
 void					ft_exit(void);
+void					ft_free_minishell(void);
 void					ft_exit_free(void);
 
 // execution
@@ -132,7 +132,5 @@ void					loop(void);
 // cmd
 void					free_cmd(t_cmd *cmd);
 t_cmd					*new_cmd(char **args);
-
-void					print_token2(t_token *t, int nivel);
 
 #endif

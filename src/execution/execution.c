@@ -6,7 +6,7 @@
 /*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 14:51:47 by afpachec          #+#    #+#             */
-/*   Updated: 2025/03/30 12:29:45 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:28:43 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ bool	assert_cmd(t_cmd *cmd)
 pid_t	execute(t_cmd *cmd)
 {
 	pid_t	pid;
+	char	**env;
 
 	pid = fork();
 	if (pid)
@@ -89,8 +90,10 @@ pid_t	execute(t_cmd *cmd)
 	if (!assert_cmd(cmd))
 		ft_exit_free();
 	close_all_non_standart_fds();
-	unmask_signals();
-	execve(cmd->args[0], cmd->args, ft_hashmap_to_strv(terminal()->env));
+	mask_signals(CLEAR);
+	env = ft_hashmap_to_strv(terminal()->env);
+	execve(cmd->args[0], cmd->args, env);
+	ft_strvfree(env);
 	terminal()->status = 127;
 	ft_exit_free();
 	return (0);

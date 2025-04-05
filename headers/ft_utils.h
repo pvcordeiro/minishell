@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: afpachec <afpachec@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 12:15:46 by paude-so          #+#    #+#             */
-/*   Updated: 2025/03/30 12:47:23 by paude-so         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:09:51 by afpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <stdint.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdarg.h>
 
 typedef struct s_element
 {
@@ -100,6 +99,7 @@ void					ft_hashmap_del(t_hashmap *hashmap, char *key);
 void					ft_close(int fd);
 void					ft_close2(int fd1, int fd2);
 void					ft_fprint_strv(int fd, char **strv);
-int						ft_printf(const char *input, ...);
+bool					ft_isdigit(int c);
+char					*ft_strappend(char *str, char append);
 
 #endif
