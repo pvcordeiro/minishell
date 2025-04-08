@@ -15,6 +15,7 @@ SRCS = src/cmd/cd.c \
 	   src/execution/process/cmd.c \
 	   src/execution/process/pipe.c \
 	   src/execution/process/process.c \
+	   src/execution/cool_prompt.c \
 	   src/execution/arg_clean.c \
 	   src/execution/hide_signals.c \
 	   src/execution/arg_expansion.c \
@@ -62,7 +63,7 @@ $(OBJ_DIR)%.o: %.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	@rm -rf $(OBJ_DIR) valgrind_log.txt readline.supp
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
 	@rm -rf $(NAME)
@@ -72,11 +73,8 @@ re: fclean all
 r: re
 	@ clear && ./minishell
 
-v: re readline.supp
-	@valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --suppressions=readline.supp ./minishell
-
-readline.supp:
-	@wget https://raw.githubusercontent.com/afonsopc/minishell/refs/heads/readline.supp/readline.supp -O readline.supp
+v: re
+	@valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --suppressions=$(PWD)/readline.supp ./minishell
 
 test: re
 	@git clone https://github.com/LucasKuhn/minishell_tester
