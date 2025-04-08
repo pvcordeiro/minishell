@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cool_prompt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afpachec <afpachec@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: paude-so <paude-so@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 23:45:25 by afpachec          #+#    #+#             */
-/*   Updated: 2025/04/03 23:48:13 by afpachec         ###   ########.fr       */
+/*   Updated: 2025/04/08 12:57:53 by paude-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ static char	*get_main_info(void)
 	return (free(tmp), free(user), free(machine), main_info);
 }
 
-static char	*wrap_string_in_brackets(char *str)
+static char	*wrap_string_in_shells(char *str)
 {
 	char	*bracketed_str;
 	char	*tmp;
 
-	tmp = ft_strjoin("[", str);
-	bracketed_str = ft_strjoin(tmp, "]");
+	tmp = ft_strjoin("🐚", str);
+	bracketed_str = ft_strjoin(tmp, "🐚");
 	free(tmp);
 	return (bracketed_str);
 }
@@ -60,9 +60,9 @@ char	*get_prompt(void)
 	free(main_info);
 	free(curr_dir);
 	prompt = tmp;
-	tmp = wrap_string_in_brackets(prompt);
+	tmp = wrap_string_in_shells(prompt);
 	free(prompt);
-	prompt = ft_strjoin(tmp, "$ ");
+	prompt = ft_strjoin(tmp, " ");
 	free(tmp);
 	return (prompt);
 }
