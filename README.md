@@ -43,9 +43,9 @@ make
 Once launched, you'll see a prompt waiting for your commands:
 
 ```bash
-🐚minishell🐚 ls -la
-🐚minishell🐚 cat file.txt | grep "pattern" > output.txt
-🐚minishell🐚 echo $HOME
+🐚$USER@$MACHINE $DIRECTORY🐚 ls -la
+🐚$USER@$MACHINE $DIRECTORY🐚 cat file.txt | grep "pattern" > output.txt
+🐚$USER@$MACHINE $DIRECTORY🐚 echo $HOME
 ```
 
 ## 📚 Resources
